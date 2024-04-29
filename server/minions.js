@@ -9,8 +9,6 @@ const {createMeeting,
     deleteFromDatabasebyId,
     deleteAllFromDatabase,} = require('./db')
 
-    let nextMinionId = 11
-
 minionsRouter.param('minionId', (req, res, next, id)=>{
     const minionId = id
     if(getFromDatabaseById('minions', minionId)) {
@@ -33,12 +31,6 @@ minionsRouter.get('/:minionId', (req, res, next)=>{
 minionsRouter.post('/', (req, res, next)=>{
     const minionStats = req.query
     
-    // {
-    //     name: 'TEST Schuster III',
-    //     title: 'Corporate Markets Specialist',
-    //     weaknesses: 'Cannot do enterprise capability, Will not build bleeding-edge conglomeration, Will not build viral portal, too multi-byte',
-    //     salary: 40000
-    //   }
     const newMinion = addToDatabase('minions', minionStats)
 
     console.log(newMinion)
@@ -46,6 +38,29 @@ minionsRouter.post('/', (req, res, next)=>{
         res.send(newMinion)
     } else {
         res.status(400).send()
+    }
+})
+
+minionsRouter.put('/:minionId', (req, res, next)=>{
+    const minionStats = req.query
+    minionStats.id = req.minionId
+    
+    const updatedMinion = updateInstanceInDatabase('minions', minionStats)
+
+    if(updatedMinion) {
+        res.send(updatedMinion)
+    } else {
+        res.status(400).send()
+    }
+})
+
+minionsRouter.delete('/:minionId', (req, res, next)=>{
+    const deletedMinion = deleteFromDatabasebyId('minions', req.minionId)
+    console.log(deletedMinion)
+    if(deletedMinion) {
+        res.status(204).send()
+    } else {
+        res.status(404).send()
     }
 })
 
