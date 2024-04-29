@@ -212,6 +212,8 @@ const getFromDatabaseById = (modelType, id) => {
 
 const addToDatabase = (modelType, instance) => {
   const model = findDataArrayByName(modelType);
+  //console.log(model)
+  //console.log(instance)
   if (model === null) {
     return null;
   }
